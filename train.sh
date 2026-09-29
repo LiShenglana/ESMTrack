@@ -9,5 +9,5 @@ CUDA_VISIBLE_DEVICES=0,1 python tracking/train.py \
 # Test on RGB-T benchmarks (lasher, rgbt234, rgbt210, gtot, vtuav)
 CUDA_VISIBLE_DEVICES=0,1 python tracking/test.py \
 --tracker_name esmtrack --tracker_param dropmae_256_150ep \
---load_dir norm_cls_token_float --runid 25 \
+--checkpoint checkpoints/LasHeR_best_checkpoint.pth \
 --dataset_name lasher --threads 8 --num_gpus 2

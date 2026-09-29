@@ -36,7 +36,7 @@ class Tracker:
     """
 
     def __init__(self, name: str, parameter_name: str, load_dir: str, dataset_name: str, run_id: int = None, display_name: str = None,
-                 result_only=False):
+                 result_only=False, checkpoint: str = None):
         assert run_id is None or isinstance(run_id, int)
 
         self.name = name
@@ -45,6 +45,10 @@ class Tracker:
         self.dataset_name = dataset_name
         self.run_id = run_id
         self.display_name = display_name
+        self.checkpoint = checkpoint
+        if checkpoint is not None and load_dir is None:
+            # name the results dir after the checkpoint file, e.g. LasHeR_best_checkpoint
+            self.load_dir = os.path.basename(checkpoint).split('.')[0]
 
         env = env_settings()
         if self.run_id is None:
@@ -81,6 +85,8 @@ class Tracker:
             params = self.get_parameters()
         else:
             params = self.get_parameters(load_dir=self.load_dir, run_id=self.run_id)
+        if self.checkpoint is not None:
+            params.checkpoint = self.checkpoint
 
         debug_ = debug
         if debug is None:
@@ -258,6 +264,8 @@ class Tracker:
         """
 
         params = self.get_parameters()
+        if self.checkpoint is not None:
+            params.checkpoint = self.checkpoint
 
         debug_ = debug
         if debug is None:

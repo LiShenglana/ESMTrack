@@ -6,10 +6,19 @@ The official implementation of **ESMTrack**.
 
 
 ## Model Weights and Raw Results
-Checkpoints and raw tracking results are hosted on [Hugging Face](https://huggingface.co/ShenglanLiaaa/ESMTrack). Download the checkpoints into `./output` (the `save_dir` used below):
+Checkpoints and raw tracking results are hosted on [Hugging Face](https://huggingface.co/ShenglanLiaaa/ESMTrack). Download the checkpoints into the project root:
 ```
-hf download ShenglanLiaaa/ESMTrack --include "checkpoints/*" --local-dir ./output
+hf download ShenglanLiaaa/ESMTrack --include "checkpoints/*" --local-dir .
 ```
+
+| Checkpoint | Benchmark |
+|:--|:--|
+| `checkpoints/LasHeR_best_checkpoint.pth` | LasHeR |
+| `checkpoints/VTUAV_best_checkpoint.pth` | VTUAV |
+| `checkpoints/GTOT_best_checkpoint.pth` | GTOT |
+| `checkpoints/RGBT210_best_checkpoint.pth` | RGBT210 |
+| `checkpoints/RGBT234_best_checkpoint.pth` | RGBT234 |
+
 The raw tracking results on the RGB-T benchmarks are in `tracking_results.zip`.
 
 
@@ -98,12 +107,14 @@ We use [wandb](https://github.com/wandb/client) to record detailed training logs
 
 
 ## Test and Evaluation
-Run the tracker on an RGB-T benchmark. `--dataset_name` can be `lasher`, `rgbt234`, `rgbt210`, `gtot` or `vtuav`; the checkpoint is loaded from `output/checkpoints/train/esmtrack/<tracker_param>/<load_dir>/ESMTrack_ep<runid>.pth.tar`.
+Run the tracker on an RGB-T benchmark with the released checkpoint of that benchmark. `--dataset_name` can be `lasher`, `rgbt234`, `rgbt210`, `gtot` or `vtuav`:
 ```
-python tracking/test.py --tracker_name esmtrack --tracker_param dropmae_256_150ep --load_dir norm_cls_token_float --runid 25 --dataset_name lasher --threads 8 --num_gpus 2
+python tracking/test.py --tracker_name esmtrack --tracker_param dropmae_256_150ep --checkpoint checkpoints/LasHeR_best_checkpoint.pth --dataset_name lasher --threads 8 --num_gpus 2
 ```
-Results are saved to `output/test/tracking_results/esmtrack/dropmae_256_150ep/norm_cls_token_float_025/<dataset>/`.
-```
+Results are saved to `output/test/tracking_results/esmtrack/dropmae_256_150ep/LasHeR_best_checkpoint/<dataset>/`.
+
+To test a checkpoint trained by yourself, use `--load_dir` and `--runid` instead of `--checkpoint`; the checkpoint is then loaded from `output/checkpoints/train/esmtrack/<tracker_param>/<load_dir>/ESMTrack_ep<runid>.pth.tar`.
+
 The saved result files can be evaluated with the official toolkits of each benchmark (e.g. the [LasHeR toolkit](https://github.com/BUGPLEASEOUT/LasHeR)).
 
 ## Test FLOPs, and Speed
