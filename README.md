@@ -2,11 +2,11 @@
 
 The official implementation of **ESMTrack**.
 
-[[Models & Raw Results (Hugging Face)](https://huggingface.co/ShenglanLiaaa/ESMTrack)]
+[[Models (Hugging Face)](https://huggingface.co/ShenglanLiaaa/ESMTrack)]
 
 
-## Model Weights and Raw Results
-Checkpoints and raw tracking results are hosted on [Hugging Face](https://huggingface.co/ShenglanLiaaa/ESMTrack). Download the checkpoints into the project root:
+## Model Weights
+Checkpoints are hosted on [Hugging Face](https://huggingface.co/ShenglanLiaaa/ESMTrack). Download the checkpoints into the project root:
 ```
 hf download ShenglanLiaaa/ESMTrack --include "checkpoints/*" --local-dir .
 ```
@@ -18,8 +18,6 @@ hf download ShenglanLiaaa/ESMTrack --include "checkpoints/*" --local-dir .
 | `checkpoints/GTOT_best_checkpoint.pth` | GTOT |
 | `checkpoints/RGBT210_best_checkpoint.pth` | RGBT210 |
 | `checkpoints/RGBT234_best_checkpoint.pth` | RGBT234 |
-
-The raw tracking results on the RGB-T benchmarks are in `tracking_results.zip`.
 
 
 ## Install the environment
