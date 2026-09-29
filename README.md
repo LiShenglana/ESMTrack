@@ -121,6 +121,5 @@ The saved result files can be evaluated with the official toolkits of each bench
 python tracking/profile_model.py --script esmtrack --config dropmae_256_150ep
 ```
 
-
 ## Acknowledgments
 * This code is built upon [SSTrack](https://arxiv.org/abs/2507.21606), [ODTrack](https://github.com/GXNU-ZhongLab/ODTrack) and [PySOT-toolkit](https://github.com/StrangerZhang/pysot-toolkit). Thanks for their great work.
