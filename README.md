@@ -103,12 +103,8 @@ Run the tracker on an RGB-T benchmark. `--dataset_name` can be `lasher`, `rgbt23
 python tracking/test.py --tracker_name esmtrack --tracker_param dropmae_256_150ep --load_dir norm_cls_token_float --runid 25 --dataset_name lasher --threads 8 --num_gpus 2
 ```
 Results are saved to `output/test/tracking_results/esmtrack/dropmae_256_150ep/norm_cls_token_float_025/<dataset>/`.
-
-Evaluate the results (set `dataset_name` in the script accordingly):
 ```
-python tracking/analysis_results.py
-```
-The saved result files can also be evaluated with the official toolkits of each benchmark (e.g. the [LasHeR toolkit](https://github.com/BUGPLEASEOUT/LasHeR)).
+The saved result files can be evaluated with the official toolkits of each benchmark (e.g. the [LasHeR toolkit](https://github.com/BUGPLEASEOUT/LasHeR)).
 
 ## Test FLOPs, and Speed
 
