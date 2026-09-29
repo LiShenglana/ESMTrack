@@ -1,0 +1,22 @@
+__pycache__/
+*.pyc
+
+# large binaries / weights
+checkpoints/
+pretrained_networks/
+output/
+*.pth
+*.pth.tar
+*.deb
+
+# experiment outputs and logs
+tracking/XXX/
+tracking/debug/
+lib/train/logs/
+wandb/
+tensorboard/
+
+# stray shell-redirect files
+lib/train/apt
+lib/train/install
+lib/train/lm-sensors

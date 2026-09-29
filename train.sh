@@ -1,5 +1,5 @@
 CUDA_VISIBLE_DEVICES=2,3 python tracking/train.py \
---script sstrack --config dropmae_256_150ep \
+--script esmtrack --config dropmae_256_150ep \
 --save_dir ./output \
 --mode multiple --nproc_per_node 2 \
 --use_wandb 0
