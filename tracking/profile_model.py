@@ -20,9 +20,9 @@ def parse_args():
     """
     parser = argparse.ArgumentParser(description='Parse args for training')
     # for train
-    parser.add_argument('--script', type=str, default='augtrack', choices=['odtrack'],
+    parser.add_argument('--script', type=str, default='esmtrack', choices=['esmtrack'],
                         help='training script name')
-    parser.add_argument('--config', type=str, default='dropmae_got_s1_scale1_cp_50ep_multiframe_lr40_tokenprop_15k', help='yaml configure file name')
+    parser.add_argument('--config', type=str, default='dropmae_256_150ep', help='yaml configure file name')
     args = parser.parse_args()
 
     return args
@@ -126,7 +126,7 @@ def get_data(bs, sz):
 if __name__ == "__main__":
     device = "cuda:0"
     torch.cuda.set_device(device)
-    # Compute the Flops and Params of our STARK-S model
+    # Compute the FLOPs, Params and speed of ESMTrack
     args = parse_args()
     '''update cfg'''
     yaml_fname = 'experiments/%s/%s.yaml' % (args.script, args.config)
@@ -138,29 +138,24 @@ if __name__ == "__main__":
     z_sz = cfg.TEST.TEMPLATE_SIZE
     x_sz = cfg.TEST.SEARCH_SIZE
 
-    if args.script == "augtrack":
-        model_module = importlib.import_module('lib.models')
-        model_constructor = model_module.build_augtrack
-        model = model_constructor(cfg, training=False)
-        # get the template and search
-        template = torch.randn(bs, 3, z_sz, z_sz)
-        search = torch.randn(bs, 3, x_sz, x_sz)
-        # transfer to device
-        model = model.to(device)
-        template = template.to(device)
-        search = search.to(device)
+    if args.script == "esmtrack":
+        import lib.train.admin.settings as ws_settings
+        from lib.train.base_functions import update_settings
+        from lib.models.esmtrack import build_esmtrack
 
-        # momery
-        template_list, search_list = [], [search]
-        template_len = 3
-        for i in range(template_len):
-            template_list.append(template)
-            
-        merge_layer = cfg.MODEL.BACKBONE.MERGE_LAYER
-        if merge_layer <= 0:
-            evaluate_odtrack(model, template_list, search_list)
-        else:
-            evaluate_vit_separate(model, template, search)
-            
+        settings = ws_settings.Settings()
+        settings.local_rank = -1
+        update_settings(settings, cfg)
+        model = build_esmtrack(cfg, training=False, settings=settings)
+        model = model.to(device).eval()
+
+        # RGB-T input: visible and infrared images are stacked into 6 channels
+        template = torch.randn(bs, 6, z_sz, z_sz).to(device)
+        search = torch.randn(bs, 6, x_sz, x_sz).to(device)
+        template_list = [template] * cfg.TEST.TEMPLATE_NUMBER
+        search_list = [search]
+
+        evaluate_odtrack(model, template_list, search_list)
+
     else:
         raise NotImplementedError
