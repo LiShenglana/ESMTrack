@@ -12,17 +12,18 @@ import numpy as np
 
 
 def trackerlist(name: str, parameter_name: str, dataset_name: str, run_ids = None, display_name: str = None,
-                result_only=False):
+                result_only=False, load_dir: str = None):
     """Generate list of trackers.
     args:
         name: Name of tracking method.
         parameter_name: Name of parameter file.
         run_ids: A single or list of run_ids.
         display_name: Name to be displayed in the result plots.
+        load_dir: Name of checkpoint dir.
     """
     if run_ids is None or isinstance(run_ids, int):
         run_ids = [run_ids]
-    return [Tracker(name, parameter_name, dataset_name, run_id, display_name, result_only) for run_id in run_ids]
+    return [Tracker(name, parameter_name, load_dir, dataset_name, run_id, display_name, result_only) for run_id in run_ids]
 
 
 class Tracker:

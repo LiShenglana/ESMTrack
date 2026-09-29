@@ -1,10 +1,13 @@
-CUDA_VISIBLE_DEVICES=2,3 python tracking/train.py \
+# Train on LasHeR
+CUDA_VISIBLE_DEVICES=0,1 python tracking/train.py \
 --script esmtrack --config dropmae_256_150ep \
 --save_dir ./output \
 --mode multiple --nproc_per_node 2 \
 --use_wandb 0
 
 
-CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python tracking/test.py \
-onemamba baseline_256_ndtetoken_rgbtoken_taskproduct_simba_resgate_notFFN \
---runid 14 --dataset_name visevent --threads 24 --num_gpus 8
+# Test on RGB-T benchmarks (lasher, rgbt234, rgbt210, gtot, vtuav)
+CUDA_VISIBLE_DEVICES=0,1 python tracking/test.py \
+--tracker_name esmtrack --tracker_param dropmae_256_150ep \
+--load_dir norm_cls_token_float --runid 25 \
+--dataset_name lasher --threads 8 --num_gpus 2

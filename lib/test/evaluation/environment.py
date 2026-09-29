@@ -92,6 +92,8 @@ class EnvSettings_ITP:
         self.lasher_path = os.path.join(data_dir, 'lasher')
         self.rgbt234_path = os.path.join(data_dir, 'rgbt234')
         self.rgbt210_path = os.path.join(data_dir, 'rgbt210')
+        self.gtot_path = os.path.join(data_dir, 'gtot')
+        self.vtuav_path = os.path.join(data_dir, 'vtuav')
         self.visevent_path = os.path.join(data_dir, 'visevent')
         self.art_path = os.path.join(data_dir, 'arkit')
         self.depthtrack_path = os.path.join(data_dir, 'depthtrack')

@@ -6,11 +6,11 @@ The official implementation of **ESMTrack**.
 
 
 ## Model Weights and Raw Results
-Checkpoints and raw tracking results are hosted on [Hugging Face](https://huggingface.co/ShenglanLiaaa/ESMTrack). Download the checkpoints into the project root:
+Checkpoints and raw tracking results are hosted on [Hugging Face](https://huggingface.co/ShenglanLiaaa/ESMTrack). Download the checkpoints into `./output` (the `save_dir` used below):
 ```
-hf download ShenglanLiaaa/ESMTrack --include "checkpoints/*" --local-dir .
+hf download ShenglanLiaaa/ESMTrack --include "checkpoints/*" --local-dir ./output
 ```
-The raw tracking results are in `tracking_results.zip`.
+The raw tracking results on the RGB-T benchmarks are in `tracking_results.zip`.
 
 
 ## Install the environment
@@ -22,29 +22,54 @@ bash install.sh
 
 
 ## Data Preparation
-Put the tracking datasets in ./data. It should look like:
+ESMTrack is trained on [LasHeR](https://github.com/BUGPLEASEOUT/LasHeR) and evaluated on the RGB-T benchmarks LasHeR, RGBT234, RGBT210, GTOT and VTUAV. Put the datasets in ./data. It should look like:
    ```
    ${PROJECT_ROOT}
     -- data
-        -- lasot
-            |-- airplane
-            |-- basketball
-            |-- bear
+        -- lasher
+            |-- trainingset
+                |-- 2up
+                    |-- visible        # v000000.jpg, v000001.jpg, ...
+                    |-- infrared       # i000000.jpg, i000001.jpg, ...
+                    |-- init.txt
+                ...
+            |-- testingset
+                |-- list.txt
+                |-- 10runone
+                    |-- visible
+                    |-- infrared
+                    |-- init.txt
+                ...
+        -- rgbt234
+            |-- list.txt
+            |-- afterrain
+                |-- visible
+                |-- infrared
+                |-- visible.txt
             ...
-        -- got10k
-            |-- test
-            |-- train
-            |-- val
-        -- coco
-            |-- annotations
-            |-- images
-        -- trackingnet
-            |-- TRAIN_0
-            |-- TRAIN_1
+        -- rgbt210
+            |-- list.txt
+            |-- afterrain
+                |-- visible
+                |-- infrared
+                |-- init.txt
             ...
-            |-- TRAIN_11
-            |-- TEST
+        -- gtot
+            |-- list.txt
+            |-- BlackCar
+                |-- v
+                |-- i
+                |-- groundTruth_v.txt
+            ...
+        -- vtuav
+            |-- VTUAV-ST.txt
+            |-- animal_001
+                |-- rgb
+                |-- ir
+                |-- rgb.txt
+            ...
    ```
+The LasHeR training sequences used are listed in `lib/train/data_specs/lasher_all.txt`.
 
 
 ## Set project paths
@@ -60,14 +85,11 @@ lib/test/evaluation/local.py  # paths about testing
 
 
 ## Training
-Download pre-trained [DropMAE ViT-Base weights](https://drive.google.com/file/d/1qMuBJtNIQQ-NCz98Pig72YVKQdasc49h/view?usp=share_link) and put it under `$PROJECT_ROOT$/pretrained_networks`.
+Download pre-trained [DropMAE ViT-Base weights](https://drive.google.com/file/d/1qMuBJtNIQQ-NCz98Pig72YVKQdasc49h/view?usp=share_link) (`dropmae_k700_800E.pth`) and put it under `$PROJECT_ROOT$/pretrained_networks`.
 
+Train on LasHeR (`DATA.TRAIN.DATASETS_NAME: LasHeR_all` in the config):
 ```
-python tracking/train.py \
---script esmtrack --config dropmae_256_150ep \
---save_dir ./output \
---mode multiple --nproc_per_node 2 \
---use_wandb 1
+python tracking/train.py --script esmtrack --config dropmae_256_150ep --save_dir ./output --mode multiple --nproc_per_node 2 --use_wandb 1
 ```
 
 Replace `--config` with the desired model config under `experiments/esmtrack`.
@@ -76,24 +98,17 @@ We use [wandb](https://github.com/wandb/client) to record detailed training logs
 
 
 ## Test and Evaluation
+Run the tracker on an RGB-T benchmark. `--dataset_name` can be `lasher`, `rgbt234`, `rgbt210`, `gtot` or `vtuav`; the checkpoint is loaded from `output/checkpoints/train/esmtrack/<tracker_param>/<load_dir>/ESMTrack_ep<runid>.pth.tar`.
+```
+python tracking/test.py --tracker_name esmtrack --tracker_param dropmae_256_150ep --load_dir norm_cls_token_float --runid 25 --dataset_name lasher --threads 8 --num_gpus 2
+```
+Results are saved to `output/test/tracking_results/esmtrack/dropmae_256_150ep/norm_cls_token_float_025/<dataset>/`.
 
-- LaSOT or other off-line evaluated benchmarks (modify `--dataset` correspondingly)
+Evaluate the results (set `dataset_name` in the script accordingly):
 ```
-python tracking/test.py esmtrack dropmae_256_150ep --dataset lasot --runid 150 --threads 8 --num_gpus 2
-python tracking/analysis_results.py # need to modify tracker configs and names
+python tracking/analysis_results.py
 ```
-- GOT10K-test
-```
-python tracking/test.py esmtrack dropmae_256_got_60ep --dataset got10k_test  --runid 60 --threads 8 --num_gpus 2
-python lib/test/utils/transform_got10k.py --tracker_name esmtrack --cfg_name dropmae_256_got_60ep_060
-```
-- TrackingNet
-```
-python tracking/test.py esmtrack baseline --dataset trackingnet  --runid 150 --threads 8 --num_gpus 2
-python lib/test/utils/transform_trackingnet.py --tracker_name esmtrack --cfg_name dropmae_256_150ep
-```
-
-For OTB and VOT2018 datasets, we use (eval_vot18_otb.sh) [PySOT-toolkit](https://github.com/StrangerZhang/pysot-toolkit) library for performance evaluation.
+The saved result files can also be evaluated with the official toolkits of each benchmark (e.g. the [LasHeR toolkit](https://github.com/BUGPLEASEOUT/LasHeR)).
 
 ## Test FLOPs, and Speed
 

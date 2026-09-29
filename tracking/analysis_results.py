@@ -8,10 +8,10 @@ from lib.test.evaluation import get_dataset, trackerlist
 
 
 trackers = []
-dataset_name = 'lasot'  # lasot_extension_subset
+dataset_name = 'lasher'  # gtot, rgbt210, rgbt234, lasher, vtuav
 
 trackers.extend(trackerlist(name='esmtrack', parameter_name='dropmae_256_150ep', dataset_name=dataset_name,
-                            run_ids=150, display_name='esmtrack'))
+                            run_ids=25, display_name='esmtrack', load_dir='norm_cls_token_float'))
 
 # For VOT evaluate
 dataset = get_dataset(dataset_name)
