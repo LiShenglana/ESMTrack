@@ -85,7 +85,7 @@ lib/test/evaluation/local.py  # paths about testing
 
 
 ## Training
-Download pre-trained [DropMAE ViT-Base weights](https://drive.google.com/file/d/1qMuBJtNIQQ-NCz98Pig72YVKQdasc49h/view?usp=share_link) (`dropmae_k700_800E.pth`) and put it under `$PROJECT_ROOT$/pretrained_networks`.
+Download the pre-trained [DropMAE ViT-Base weights](https://drive.google.com/file/d/1qMuBJtNIQQ-NCz98Pig72YVKQdasc49h/view?usp=share_link) (`dropmae_k700_800E.pth`, K700-800E) released by the [DropMAE authors](https://github.com/jimmy-dq/DropMAE) and put it under `$PROJECT_ROOT$/pretrained_networks`. These weights are not redistributed in this repository or on Hugging Face.
 
 Train on LasHeR (`DATA.TRAIN.DATASETS_NAME: LasHeR_all` in the config):
 ```
