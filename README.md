@@ -2,6 +2,16 @@
 
 The official implementation of **ESMTrack**.
 
+[[Models & Raw Results (Hugging Face)](https://huggingface.co/ShenglanLiaaa/ESMTrack)]
+
+
+## Model Weights and Raw Results
+Checkpoints and raw tracking results are hosted on [Hugging Face](https://huggingface.co/ShenglanLiaaa/ESMTrack). Download the checkpoints into the project root:
+```
+hf download ShenglanLiaaa/ESMTrack --include "checkpoints/*" --local-dir .
+```
+The raw tracking results are in `tracking_results.zip`.
+
 
 ## Install the environment
 ```
