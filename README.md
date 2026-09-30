@@ -10,6 +10,16 @@ Checkpoints are hosted on [Hugging Face](https://huggingface.co/ShenglanLiaaa/ES
 ```
 hf download ShenglanLiaaa/ESMTrack --include "checkpoints/*" --local-dir .
 ```
+If you find our work useful in your research, please consider citing:
+@inproceedings{ESMTrack2026,
+      title={End-to-End Self-Supervised RGB-T Tracking without Modality Misleading}, 
+      author={Shenglan Li and Rui Yao and Kunyang Sun and Hong Jia and Yong Zhou and Javen Qinfeng Shi and Xinyu Zhang},
+      year={2026},
+      eprint={2609.37162},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2609.37162}, 
+}
 
 | Checkpoint | Benchmark |
 |:--|:--|
