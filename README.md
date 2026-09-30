@@ -13,7 +13,7 @@ If you find our work useful in your research, please consider citing:
       eprint={2609.37162},
       archivePrefix={arXiv},
       primaryClass={cs.CV},
-      url={https://arxiv.org/abs/2609.37162}, 
+      url={https://arxiv.org/abs/2609.37162}
 }
 ```
 
