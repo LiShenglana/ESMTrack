@@ -10,17 +10,6 @@ Checkpoints are hosted on [Hugging Face](https://huggingface.co/ShenglanLiaaa/ES
 ```
 hf download ShenglanLiaaa/ESMTrack --include "checkpoints/*" --local-dir .
 ```
-If you find our work useful in your research, please consider citing:
-
-*@inproceedings{ESMTrack2026,
-      title={End-to-End Self-Supervised RGB-T Tracking without Modality Misleading}, 
-      author={Shenglan Li and Rui Yao and Kunyang Sun and Hong Jia and Yong Zhou and Javen Qinfeng Shi and Xinyu Zhang},
-      year={2026},
-      eprint={2609.37162},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV},
-      url={https://arxiv.org/abs/2609.37162}, 
-}
 
 | Checkpoint | Benchmark |
 |:--|:--|
@@ -134,3 +123,16 @@ python tracking/profile_model.py --script esmtrack --config dropmae_256_150ep
 
 ## Acknowledgments
 * This code is built upon [SSTrack](https://arxiv.org/abs/2507.21606), [ODTrack](https://github.com/GXNU-ZhongLab/ODTrack) and [PySOT-toolkit](https://github.com/StrangerZhang/pysot-toolkit). Thanks for their great work.
+
+If you find our work useful in your research, please consider citing:
+```
+@inproceedings{ESMTrack2026,
+      title={End-to-End Self-Supervised RGB-T Tracking without Modality Misleading}, 
+      author={Shenglan Li and Rui Yao and Kunyang Sun and Hong Jia and Yong Zhou and Javen Qinfeng Shi and Xinyu Zhang},
+      year={2026},
+      eprint={2609.37162},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2609.37162}, 
+}
+```
